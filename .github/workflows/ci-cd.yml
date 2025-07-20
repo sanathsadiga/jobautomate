@@ -3,7 +3,7 @@ name: CI/CD Pipeline
 on:
   push:
     branches:
-      - main  # Trigger workflow only when pushing to main branch
+      - main  # Trigger workflow on main branch push
 
 jobs:
   build-test:
@@ -43,3 +43,24 @@ jobs:
         with:
           push: true
           tags: ${{ secrets.DOCKER_HUB_USERNAME }}/job-autoapply:latest
+
+  deploy-ec2:
+    runs-on: ubuntu-latest
+    needs: docker-deploy
+    steps:
+      - name: Setup SSH
+        uses: webfactory/ssh-agent@v0.8.0
+        with:
+          ssh-private-key: ${{ secrets.EC2_SSH_KEY }}
+
+      - name: Add EC2 to known_hosts
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.SSH_KNOWN_HOSTS }}" > ~/.ssh/known_hosts
+
+      - name: Deploy on EC2
+        env:
+          EC2_HOST: ${{ secrets.EC2_HOST }}
+          EC2_USER: ${{ secrets.EC2_USER }}
+        run: |
+          ssh $EC2_USER@$EC2_HOST "/opt/job-autoapply/update.sh ${{ secrets.DOCKER_HUB_USERNAME }}/job-autoapply:latest"

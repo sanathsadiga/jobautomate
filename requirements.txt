@@ -6,3 +6,5 @@ apscheduler
 pytest
 pytest-asyncio
 httpx
+pdfplumber
+requests

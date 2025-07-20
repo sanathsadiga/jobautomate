@@ -11,25 +11,25 @@ from sqlalchemy.dialects.postgresql import insert
 USER_YEARS = 2
 async def scrape_company(company, role, location):
     if company.lower() == "zoho":
-        jobs = scrape_zoho_jobs(role, location)  # Zoho uses requests (sync)
+        jobs = scrape_zoho_jobs(role, location)
         return [{"company": "Zoho", **job} for job in jobs]
 
     elif company.lower() == "google":
-        jobs = scrape_google_jobs(role, location)  # Sync or async?
+        jobs = scrape_google_jobs(role, location)
         return [{"company": "Google", **job} for job in jobs]
 
     elif company.lower() == "microsoft":
-        jobs = scrape_microsoft_jobs(role, location)  # ✅ Use await here
+        # Microsoft scraper is synchronous
+        jobs = await asyncio.to_thread(scrape_microsoft_jobs, role, location)
         save_jobs_to_db(jobs)
         return jobs
-    
-    elif company == "amazon":
+
+    elif company.lower() == "amazon":
         print("Scraping Amazon...")
         jobs = await scrape_amazon_jobs(role, location)
         print(f"Amazon Scraper Returned: {len(jobs)} jobs")
         save_jobs_to_db(jobs)
-        return [{"company": "Amazon", **job} for job in jobs]
-
+        return jobs
 
     return [{"company": company, "error": "Scraper not implemented"}]
 

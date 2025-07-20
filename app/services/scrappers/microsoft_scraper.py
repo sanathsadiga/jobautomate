@@ -13,6 +13,7 @@ from selenium.webdriver.support import expected_conditions as EC
 import re
 import html
 import tempfile
+import random
 
 
 # Fix cache directory issue
@@ -72,6 +73,8 @@ def scrape_microsoft_jobs(role: str,
     options.add_argument("--log-level=3")
     options.add_argument(f"--user-data-dir={tempfile.mkdtemp()}")
     options.add_experimental_option("excludeSwitches", ["enable-logging"])
+    options.add_argument(f"--remote-debugging-port={random.randint(9222, 9999)}")
+
     service = Service(log_path=os.devnull)
 
     logger.info(f"Starting Microsoft scraper (role='{role}', location='{location}', deep={deep})")

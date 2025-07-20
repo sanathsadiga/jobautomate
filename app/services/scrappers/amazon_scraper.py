@@ -6,6 +6,7 @@ from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
+import random
 
 import os
 
@@ -42,6 +43,8 @@ async def scrape_amazon_jobs(role: str, location: str = None) -> list:
     options.add_argument("--disable-gpu")
     options.add_argument(f"--user-data-dir={tempfile.mkdtemp()}")  # Ensure unique session
     options.add_experimental_option("excludeSwitches", ["enable-logging"])  # Suppress DevTools logs
+    options.add_argument(f"--remote-debugging-port={random.randint(9222, 9999)}")
+
 
     def run_selenium():
         jobs = []

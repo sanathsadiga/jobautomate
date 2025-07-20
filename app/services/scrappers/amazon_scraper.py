@@ -41,8 +41,6 @@ async def scrape_amazon_jobs(role: str, location: str = None) -> list:
     options.add_argument("--disable-dev-shm-usage")
     options.add_argument("--window-size=1920,1080")
     options.add_argument("--disable-gpu")
-    unique_user_data_dir = os.path.join(tempfile.gettempdir(), f"selenium-{uuid.uuid4()}")
-    options.add_argument(f"--user-data-dir={unique_user_data_dir}")
     options.add_experimental_option("excludeSwitches", ["enable-logging"])  # Suppress DevTools logs
     options.add_argument(f"--remote-debugging-port={random.randint(9222, 9999)}")
 

@@ -73,8 +73,6 @@ def scrape_microsoft_jobs(role: str,
     options.add_argument("--disable-extensions")
     options.add_argument("--disable-logging")
     options.add_argument("--log-level=3")
-    unique_user_data_dir = os.path.join(tempfile.gettempdir(), f"selenium-{uuid.uuid4()}")
-    options.add_argument(f"--user-data-dir={unique_user_data_dir}")
     options.add_experimental_option("excludeSwitches", ["enable-logging"])
     options.add_argument(f"--remote-debugging-port={random.randint(9222, 9999)}")
 

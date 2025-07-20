@@ -21,10 +21,13 @@ async def scrape_company(company, role, location):
         jobs = scrape_google_jobs(role, location)
         return [{"company": "Google", **job} for job in jobs]
 
+    # replace inside scraper_manager for microsoft part:
     elif company.lower() == "microsoft":
-        jobs = await asyncio.to_thread(scrape_microsoft_jobs, role, location)
+        from app.services.scrappers.microsoft_scraper import scrape_microsoft_jobs_async
+        jobs = await scrape_microsoft_jobs_async(role, location)
         save_jobs_to_db(jobs)
         return jobs
+
 
     elif company.lower() == "amazon":
         print("Scraping Amazon...")

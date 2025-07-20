@@ -7,7 +7,7 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 import random
-
+import uuid
 import os
 
 # Fix cache directory issue
@@ -41,7 +41,8 @@ async def scrape_amazon_jobs(role: str, location: str = None) -> list:
     options.add_argument("--disable-dev-shm-usage")
     options.add_argument("--window-size=1920,1080")
     options.add_argument("--disable-gpu")
-    options.add_argument(f"--user-data-dir={tempfile.mkdtemp()}")  # Ensure unique session
+    unique_user_data_dir = os.path.join(tempfile.gettempdir(), f"selenium-{uuid.uuid4()}")
+    options.add_argument(f"--user-data-dir={unique_user_data_dir}")
     options.add_experimental_option("excludeSwitches", ["enable-logging"])  # Suppress DevTools logs
     options.add_argument(f"--remote-debugging-port={random.randint(9222, 9999)}")
 

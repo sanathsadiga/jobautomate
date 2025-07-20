@@ -10,3 +10,5 @@ pdfplumber
 requests
 python-multipart
 beautifulsoup4
+selenium
+

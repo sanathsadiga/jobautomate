@@ -107,8 +107,6 @@ def start_scheduler():
     _scheduler = BackgroundScheduler()
     # Midnight daily run
     _scheduler.add_job(job_scraper_task, "cron", hour=0, minute=0, id="daily_midnight_scrape")
-    # For testing: every minute (remove later)
-    _scheduler.add_job(job_scraper_task, "interval", minutes=1, id="dev_interval_scrape")
 
     _scheduler.add_listener(_job_listener, EVENT_JOB_ERROR | EVENT_JOB_EXECUTED)
     _scheduler.start()

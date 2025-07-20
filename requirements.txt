@@ -8,3 +8,5 @@ pytest-asyncio
 httpx
 pdfplumber
 requests
+python-multipart
+beautifulsoup4

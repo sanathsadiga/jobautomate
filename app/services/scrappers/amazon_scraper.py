@@ -7,6 +7,13 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 
+import os
+
+# Fix cache directory issue
+os.makedirs("/tmp/.cache/selenium", exist_ok=True)
+os.environ["XDG_CACHE_HOME"] = "/tmp/.cache"
+
+
 # Configure logger for this module
 logger = logging.getLogger("AmazonScraper")
 if not logger.handlers:

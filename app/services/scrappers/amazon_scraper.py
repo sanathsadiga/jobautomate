@@ -1,5 +1,6 @@
 import asyncio
 import logging
+import tempfile
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.common.by import By
@@ -31,6 +32,8 @@ async def scrape_amazon_jobs(role: str, location: str = None) -> list:
     options.add_argument("--no-sandbox")
     options.add_argument("--disable-dev-shm-usage")
     options.add_argument("--window-size=1920,1080")
+    options.add_argument("--disable-gpu")
+    options.add_argument(f"--user-data-dir={tempfile.mkdtemp()}")  # Ensure unique session
     options.add_experimental_option("excludeSwitches", ["enable-logging"])  # Suppress DevTools logs
 
     def run_selenium():

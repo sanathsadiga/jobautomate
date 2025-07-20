@@ -12,6 +12,12 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 import re
 import html
+import tempfile
+
+
+# Fix cache directory issue
+os.makedirs("/tmp/.cache/selenium", exist_ok=True)
+os.environ["XDG_CACHE_HOME"] = "/tmp/.cache"
 
 # ----------------------------------
 # Normalization map
@@ -64,6 +70,7 @@ def scrape_microsoft_jobs(role: str,
     options.add_argument("--disable-extensions")
     options.add_argument("--disable-logging")
     options.add_argument("--log-level=3")
+    options.add_argument(f"--user-data-dir={tempfile.mkdtemp()}")
     options.add_experimental_option("excludeSwitches", ["enable-logging"])
     service = Service(log_path=os.devnull)
 
